@@ -43,14 +43,21 @@ def prod(pattern):
 	return list(itertools.product(*choice))
 
 
+class hashValidatorResponse:
+
+	def __init__(self, validatedMD5, validatedSHA):
+		self.validatedMD5 = validatedMD5
+		self.validatedSHA = validatedSHA
+
+
 def hashValidator(hashes):
 	validatedMD5 = []
 	validatedSHA = []
 
 	for hsh in hashes:
-		try:
-			int(hsh, 16)
-		except:
+		if int(hsh, 16):
+			continue
+		else:
 			pass
 		if len(hsh) == 32:
 			validatedMD5.append(hsh)
@@ -59,7 +66,7 @@ def hashValidator(hashes):
 		else:
 			pass
 
-	return validatedMD5, validatedSHA
+	return hashValidatorResponse(validatedMD5, validatedSHA)
 
 
 def md5Encode(word):
@@ -114,7 +121,9 @@ if __name__ == '__main__':
 
 	with open(hashValue, "r") as hashList:
 		hashes = hashList.read().splitlines()
-		validatedMD5, validatedSHA = hashValidator(hashes)
+		response = hashValidator(hashes)
+		validatedMD5 = response.validatedMD5
+		validatedSHA = response.validatedSHA
 
 	if choice == "dict":
 		f = open(wordList, "r")
