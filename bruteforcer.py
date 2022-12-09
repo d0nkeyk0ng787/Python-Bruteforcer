@@ -55,9 +55,9 @@ def hashValidator(hashes):
 	validatedSHA = []
 
 	for hsh in hashes:
-		if int(hsh, 16):
-			continue
-		else:
+		try:
+			int(hsh, 16)
+		except:
 			pass
 		if len(hsh) == 32:
 			validatedMD5.append(hsh)
